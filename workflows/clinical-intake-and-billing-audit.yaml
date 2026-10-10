@@ -1,0 +1,30 @@
+id: clinical-intake-and-billing-audit
+name: Clinical Intake and Billing Audit
+steps:
+  - id: intake
+    agent: patient-intake-triager
+    on_failure: continue
+    input: >-
+      Process new patient intake questionnaires and medical history documents in ./intake/ in your working directory.
+      Identify critical medical alerts, drug-allergy contraindications, and synthesize a provider pre-exam brief.
+      Save the summary to ./briefs/ and include the clinical alert table in your reply. If ./intake/ is empty,
+      reply with one line stating no intake forms were found.
+  - id: soap
+    agent: soap-note-assistant
+    on_failure: continue
+    input: >-
+      Convert clinician dictations and visit recordings in ./dictations/ into a standardized SOAP progress note.
+      Incorporate relevant patient background from the intake summary below:
+      {{intake.output}}
+      Suggest appropriate ICD-10 and CPT billing codes and save the progress note to ./notes/.
+  - id: billing
+    agent: claim-denial-appealer
+    input: >-
+      Review insurance claim denial Explanation of Benefits (EOB) files in ./denials/. For each denied claim,
+      cross-reference the patient chart and SOAP notes generated below to draft a formal appeal letter:
+
+      Patient Intake Context:
+      {{intake.output}}
+
+      SOAP Clinical Documentation:
+      {{soap.output}}

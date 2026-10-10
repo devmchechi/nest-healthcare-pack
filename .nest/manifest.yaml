@@ -1,0 +1,7 @@
+id: healthcare-pack
+name: Healthcare & Practice Ops Pack
+description: Offline SOAP clinical notes synthesis, insurance claim denial appeals drafting, and patient intake triage for independent medical practices.
+version: 1.0.0
+min_nest_version: 0.1.0
+agents: [soap-note-assistant, claim-denial-appealer, patient-intake-triager]
+workflows: [clinical-intake-and-billing-audit]
